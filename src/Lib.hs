@@ -7,17 +7,18 @@ module Lib
   , getCurrentDate
   ) where
 
-import Database.PostgreSQL.Simple
-    ( query,
-      query_,
-      connect,
-      defaultConnectInfo,
-      Only(Only),
-      ConnectInfo(connectDatabase, connectPassword),
-      Connection )
-import qualified Data.Text as Text
 import Config.Types
 import Data.Maybe
+import qualified Data.Text as Text
+import Database.PostgreSQL.Simple
+  ( ConnectInfo(connectDatabase, connectPassword)
+  , Connection
+  , Only(Only)
+  , connect
+  , defaultConnectInfo
+  , query
+  , query_
+  )
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
@@ -26,7 +27,7 @@ getConnection :: DatabaseConn -> IO Connection
 getConnection connCfg =
   connect
     defaultConnectInfo
-      {connectDatabase = "postgres", connectPassword = password connCfg }
+      {connectDatabase = "postgres", connectPassword = password connCfg}
 
 performSelect :: IO Connection -> Int -> IO ()
 performSelect conn x = do

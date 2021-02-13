@@ -10,10 +10,16 @@ module Config.Types
   , parseConfig
   ) where
 
-import Data.Aeson (FromJSON(parseJSON), Value(Object), (.:?), withObject, eitherDecode)
+import Data.Aeson
+  ( FromJSON(parseJSON)
+  , Value(Object)
+  , (.:?)
+  , eitherDecode
+  , withObject
+  )
 import qualified Data.ByteString.Lazy as B
-import Data.Text 
 import Data.Maybe
+import Data.Text
 
 data DatabaseConnJ =
   DatabaseConnJ
@@ -26,7 +32,6 @@ data DatabaseConnJ =
 instance FromJSON DatabaseConnJ where
   parseJSON (Object v) =
     DatabaseConnJ <$> v .:? "host" <*> v .:? "username" <*> v .:? "password"
-
 
 data ConfigJ =
   ConfigJ
@@ -60,25 +65,24 @@ defaultConfig = Config {db = defaultDBConn, logLevel = 0}
 
 mergeDBConfig :: DatabaseConnJ -> DatabaseConn
 mergeDBConfig cfgJSON = do
-    let std = defaultDBConn
-    DatabaseConn {
-        host = unpack $ fromMaybe (pack $ host std) $  _host cfgJSON 
-        , username = unpack $ fromMaybe (pack $ username std) $ _username cfgJSON
-        , password = unpack $ fromMaybe (pack $ password std) $ _password cfgJSON
+  let std = defaultDBConn
+  DatabaseConn
+    { host = unpack $ fromMaybe (pack $ host std) $ _host cfgJSON
+    , username = unpack $ fromMaybe (pack $ username std) $ _username cfgJSON
+    , password = unpack $ fromMaybe (pack $ password std) $ _password cfgJSON
     }
-
 
 mergeConfig :: ConfigJ -> Config
 mergeConfig cfgJSON = do
-    let std = defaultConfig
-    Config {
-        db = maybe defaultDBConn mergeDBConfig $ _db cfgJSON
-          , logLevel = fromMaybe  (logLevel std) $ _logLevel cfgJSON
+  let std = defaultConfig
+  Config
+    { db = maybe defaultDBConn mergeDBConfig $ _db cfgJSON
+    , logLevel = fromMaybe (logLevel std) $ _logLevel cfgJSON
     }
 
 parseConfig :: IO B.ByteString -> IO Config
 parseConfig xs = do
-    c <- (eitherDecode <$> xs) :: IO (Either String ConfigJ)
-    case c of
-        Left _ -> return defaultConfig
-        Right c -> return $ mergeConfig c
+  c <- (eitherDecode <$> xs) :: IO (Either String ConfigJ)
+  case c of
+    Left _ -> return defaultConfig
+    Right c -> return $ mergeConfig c

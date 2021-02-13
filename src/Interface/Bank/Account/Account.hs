@@ -6,7 +6,7 @@ module Interface.Bank.Account.Account
 
 import Snap.Core
 
-router :: Snap()
+router :: Snap ()
 router = route [("", getMyAccounts)]
 
 getMyAccounts :: Snap ()
