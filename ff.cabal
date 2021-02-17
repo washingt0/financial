@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 495f249ca7bbab23ff599b97553cd55cdec80aae37b93b6ba0fe42ac87e2bc52
+-- hash: e4b1ce9ea6057ffe1b3b1b9f0265cf6cd3352fa1eb418012b60e435d47b3148d
 
 name:           ff
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       Interface.Bank.Bank
       Interface.Routes
       Lib
+      Middleware.UserInfo
   other-modules:
       Paths_ff
   hs-source-dirs:
@@ -42,9 +43,11 @@ library
     , base >=4.7 && <5
     , bytestring
     , postgresql-simple
-    , snap-core
-    , snap-server
+    , servant
+    , servant-server
     , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 executable ff-exe
@@ -60,9 +63,11 @@ executable ff-exe
     , bytestring
     , ff
     , postgresql-simple
-    , snap-core
-    , snap-server
+    , servant
+    , servant-server
     , text
+    , wai
+    , warp
   default-language: Haskell2010
 
 test-suite ff-test
@@ -79,7 +84,9 @@ test-suite ff-test
     , bytestring
     , ff
     , postgresql-simple
-    , snap-core
-    , snap-server
+    , servant
+    , servant-server
     , text
+    , wai
+    , warp
   default-language: Haskell2010

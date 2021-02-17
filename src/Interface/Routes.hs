@@ -1,12 +1,21 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Interface.Routes
-  ( routingTree
+  ( baseServer
+  , baseAPI
   ) where
 
-import Data.Bifunctor (first)
-import Interface.Bank.Bank as BB
-import Snap.Core
+import Servant
+import Servant.API
 
-routingTree :: Snap ()
-routingTree = route [("bank", BB.router)]
+import Interface.Bank.Bank as BB
+
+-- import Middleware.UserInfo (fetchUserInfo, UserInfo)
+type BaseAPI = "bank" :> BB.BankAPI
+
+baseAPI :: Proxy BaseAPI
+baseAPI = Proxy
+
+baseServer :: Server BaseAPI
+baseServer = bankServer

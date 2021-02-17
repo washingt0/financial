@@ -1,13 +1,23 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Interface.Bank.Account.Account
-  ( router
+  ( AccountAPI
+  , accountServer
   ) where
 
-import Snap.Core
+import Servant
+import Servant.API
 
-router :: Snap ()
-router = route [("", getMyAccounts)]
+type AccountAPI
+   = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] String
 
-getMyAccounts :: Snap ()
-getMyAccounts = writeBS "AAAAA"
+accountServer :: Server AccountAPI
+accountServer = getAll :<|> getOne
+
+getAll :: Handler String
+getAll = error "getAll"
+
+getOne :: Int -> Handler String
+getOne = error "getOne"

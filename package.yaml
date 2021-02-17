@@ -18,8 +18,10 @@ dependencies:
 - text
 - aeson
 - bytestring
-- snap-core
-- snap-server
+- servant
+- servant-server
+- wai
+- warp
 
 library:
   source-dirs: src
@@ -38,8 +40,10 @@ executables:
     - text
     - aeson
     - bytestring
-    - snap-core
-    - snap-server
+    - servant
+    - servant-server
+    - wai
+    - warp
 
 tests:
   ff-test:

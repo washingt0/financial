@@ -8,6 +8,7 @@ module Config.Types
   , password
   , defaultDBConn
   , parseConfig
+  , listenPort
   ) where
 
 import Data.Aeson
@@ -37,11 +38,13 @@ data ConfigJ =
   ConfigJ
     { _db :: Maybe DatabaseConnJ
     , _logLevel :: Maybe Int
+    , _listenPort :: Maybe Int
     }
   deriving (Show)
 
 instance FromJSON ConfigJ where
-  parseJSON (Object v) = ConfigJ <$> v .:? "db" <*> v .:? "log_level"
+  parseJSON (Object v) =
+    ConfigJ <$> v .:? "db" <*> v .:? "log_level" <*> v .:? "listen_port"
 
 data DatabaseConn =
   DatabaseConn
@@ -58,10 +61,11 @@ data Config =
   Config
     { db :: DatabaseConn
     , logLevel :: Int
+    , listenPort :: Int
     }
   deriving (Show)
 
-defaultConfig = Config {db = defaultDBConn, logLevel = 0}
+defaultConfig = Config {db = defaultDBConn, logLevel = 0, listenPort = 7000}
 
 mergeDBConfig :: DatabaseConnJ -> DatabaseConn
 mergeDBConfig cfgJSON = do
@@ -78,6 +82,7 @@ mergeConfig cfgJSON = do
   Config
     { db = maybe defaultDBConn mergeDBConfig $ _db cfgJSON
     , logLevel = fromMaybe (logLevel std) $ _logLevel cfgJSON
+    , listenPort = fromMaybe (listenPort std) $ _listenPort cfgJSON
     }
 
 parseConfig :: IO B.ByteString -> IO Config
