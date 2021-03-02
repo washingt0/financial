@@ -21,13 +21,12 @@ import Database.PostgreSQL.Simple
 
 import Control.Monad.Trans.Control
 
-app :: Pool Connection -> Application
-app pool = serve baseAPI pool -- TODO
+app :: Application
+app =  serve baseAPI baseServer
 
 
 main :: IO ()
 main = do
   cfg <- loadConfig
   checkMigration (getConnection (db cfg)) "0000"
-  pool <- initializePool (db cfg)
-  run (listenPort cfg) (app pool)
+  run (listenPort cfg) app 

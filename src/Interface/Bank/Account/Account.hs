@@ -1,6 +1,7 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, FlexibleInstances #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Interface.Bank.Account.Account
   ( AccountAPI
@@ -9,17 +10,27 @@ module Interface.Bank.Account.Account
 
 import Servant
 import Servant.API
+import  Servant.API.ContentTypes
 import Data.Pool
 import Database.PostgreSQL.Simple
 
+import Data.Aeson
+import Data.Aeson.Types
+import GHC.Generics
+
+newtype HelloMessage = HelloMessage { msg :: String }
+  deriving Generic
+
+instance ToJSON HelloMessage
+
 type AccountAPI
-   = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] String
+   = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] HelloMessage
 
-accountServer :: Connection -> Server AccountAPI
-accountServer conn = getAll conn :<|> getOne conn
+accountServer :: Server AccountAPI
+accountServer = getAll :<|> getOne
 
-getAll :: Connection -> Handler String
-getAll conn = error "getAll"
+getAll :: Handler String
+getAll = error "getAll"
 
-getOne :: Connection -> Int -> Handler String
-getOne conn = error "getOne"
+getOne :: Int -> Handler HelloMessage
+getOne _ = return (HelloMessage "AAA")

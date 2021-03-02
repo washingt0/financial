@@ -18,11 +18,11 @@ import Control.Monad.IO.Class
 type BankAPI
    = "account" :> AccountAPI :<|> Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] String
 
-bankServer :: Connection -> Server BankAPI
-bankServer conn = accountServer conn :<|> getAll conn :<|> getOne conn
+bankServer :: Server BankAPI
+bankServer = accountServer :<|> getAll :<|> getOne 
 
-getAll :: Connection -> Handler String
+getAll :: Handler String
 getAll = error "getAll"
 
-getOne :: Connection -> Int -> Handler String
+getOne :: Int -> Handler String
 getOne = error "getOne"

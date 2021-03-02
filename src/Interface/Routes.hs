@@ -21,5 +21,5 @@ type BaseAPI = "bank" :> BB.BankAPI
 baseAPI :: Proxy BaseAPI
 baseAPI = Proxy
 
-baseServer :: Connection -> Server BaseAPI
+baseServer :: Server BaseAPI
 baseServer = bankServer
