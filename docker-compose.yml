@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=lab
+      - POSTGRES_PASSWORD=development
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+    restart: unless-stopped

@@ -5,6 +5,9 @@ module Config.Types
   , Config
   , defaultConfig
   , db
+  , host
+  , database
+  , username
   , password
   , defaultDBConn
   , parseConfig
@@ -27,12 +30,14 @@ data DatabaseConnJ =
     { _host :: Maybe Text
     , _username :: Maybe Text
     , _password :: Maybe Text
+    , _database :: Maybe Text
     }
   deriving (Show)
 
 instance FromJSON DatabaseConnJ where
   parseJSON (Object v) =
-    DatabaseConnJ <$> v .:? "host" <*> v .:? "username" <*> v .:? "password"
+    DatabaseConnJ <$> v .:? "host" <*> v .:? "username" <*> v .:? "password" <*>
+    v .:? "database"
 
 data ConfigJ =
   ConfigJ
@@ -51,11 +56,17 @@ data DatabaseConn =
     { host :: String
     , username :: String
     , password :: String
+    , database :: String
     }
   deriving (Show)
 
 defaultDBConn =
-  DatabaseConn {host = "localhost", username = "ff", password = "123456"}
+  DatabaseConn
+    { host = "localhost"
+    , username = "financial"
+    , password = "123456"
+    , database = "financial"
+    }
 
 data Config =
   Config
@@ -74,6 +85,7 @@ mergeDBConfig cfgJSON = do
     { host = unpack $ fromMaybe (pack $ host std) $ _host cfgJSON
     , username = unpack $ fromMaybe (pack $ username std) $ _username cfgJSON
     , password = unpack $ fromMaybe (pack $ password std) $ _password cfgJSON
+    , database = unpack $ fromMaybe (pack $ database std) $ _database cfgJSON
     }
 
 mergeConfig :: ConfigJ -> Config

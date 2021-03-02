@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e4b1ce9ea6057ffe1b3b1b9f0265cf6cd3352fa1eb418012b60e435d47b3148d
+-- hash: c06335e160172efb90b21ce3a276db0f8627ef9fa645690eb895f7dd596f97a5
 
 name:           ff
 version:        0.1.0.0
@@ -29,10 +29,11 @@ library
   exposed-modules:
       Config.Config
       Config.Types
+      Database.Database
+      Database.Exceptions
       Interface.Bank.Account.Account
       Interface.Bank.Bank
       Interface.Routes
-      Lib
       Middleware.UserInfo
   other-modules:
       Paths_ff
@@ -42,7 +43,9 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , monad-control
     , postgresql-simple
+    , resource-pool
     , servant
     , servant-server
     , text
@@ -62,7 +65,9 @@ executable ff-exe
     , base >=4.7 && <5
     , bytestring
     , ff
+    , monad-control
     , postgresql-simple
+    , resource-pool
     , servant
     , servant-server
     , text
@@ -83,7 +88,9 @@ test-suite ff-test
     , base >=4.7 && <5
     , bytestring
     , ff
+    , monad-control
     , postgresql-simple
+    , resource-pool
     , servant
     , servant-server
     , text

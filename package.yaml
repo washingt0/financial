@@ -22,6 +22,8 @@ dependencies:
 - servant-server
 - wai
 - warp
+- resource-pool
+- monad-control
 
 library:
   source-dirs: src
@@ -44,6 +46,8 @@ executables:
     - servant-server
     - wai
     - warp
+    - resource-pool
+    - monad-control
 
 tests:
   ff-test:

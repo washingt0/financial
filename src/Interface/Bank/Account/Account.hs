@@ -9,15 +9,17 @@ module Interface.Bank.Account.Account
 
 import Servant
 import Servant.API
+import Data.Pool
+import Database.PostgreSQL.Simple
 
 type AccountAPI
    = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] String
 
-accountServer :: Server AccountAPI
-accountServer = getAll :<|> getOne
+accountServer :: Connection -> Server AccountAPI
+accountServer conn = getAll conn :<|> getOne conn
 
-getAll :: Handler String
-getAll = error "getAll"
+getAll :: Connection -> Handler String
+getAll conn = error "getAll"
 
-getOne :: Int -> Handler String
-getOne = error "getOne"
+getOne :: Connection -> Int -> Handler String
+getOne conn = error "getOne"

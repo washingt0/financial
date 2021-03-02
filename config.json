@@ -1,3 +1,9 @@
 {
-    "log_level": 1
+    "log_level": 1,
+    "db": {
+        "host": "localhost",
+        "database": "financial",
+        "username": "financial",
+        "password": "development"
+    }
 }
