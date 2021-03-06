@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c06335e160172efb90b21ce3a276db0f8627ef9fa645690eb895f7dd596f97a5
+-- hash: 79f1026c87bfbea326ccaf55370f8a1be0cfc8cb40b237a3d07e164e01aa59b0
 
 name:           ff
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       Database.Exceptions
       Interface.Bank.Account.Account
       Interface.Bank.Bank
+      Interface.Country.Country
       Interface.Routes
       Middleware.UserInfo
   other-modules:
