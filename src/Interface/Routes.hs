@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
+
 module Interface.Routes
   ( baseServer
   , baseAPI
@@ -9,17 +10,18 @@ module Interface.Routes
 import Servant
 import Servant.API
 
-import Interface.Bank.Bank as BB
 import Data.Pool
 import Database.PostgreSQL.Simple
+import Interface.Bank.Bank as BB
+import qualified Interface.Country.Country as CC
 
 import Control.Monad.IO.Class
 
 -- import Middleware.UserInfo (fetchUserInfo, UserInfo)
-type BaseAPI = "bank" :> BB.BankAPI
+type BaseAPI = "country" :> CC.CountryAPI
 
 baseAPI :: Proxy BaseAPI
 baseAPI = Proxy
 
-baseServer :: Server BaseAPI
-baseServer = bankServer
+baseServer :: Pool Connection -> Server BaseAPI
+baseServer = CC.countryServer

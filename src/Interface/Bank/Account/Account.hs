@@ -8,18 +8,21 @@ module Interface.Bank.Account.Account
   , accountServer
   ) where
 
-import Servant
-import Servant.API
-import  Servant.API.ContentTypes
 import Data.Pool
 import Database.PostgreSQL.Simple
+import Servant
+import Servant.API
+import Servant.API.ContentTypes
 
 import Data.Aeson
 import Data.Aeson.Types
 import GHC.Generics
 
-newtype HelloMessage = HelloMessage { msg :: String }
-  deriving Generic
+newtype HelloMessage =
+  HelloMessage
+    { msg :: String
+    }
+  deriving (Generic)
 
 instance ToJSON HelloMessage
 

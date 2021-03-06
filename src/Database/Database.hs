@@ -13,10 +13,10 @@ import Database.PostgreSQL.Simple
             connectUser)
   , Connection
   , Only(Only)
+  , close
   , connect
   , defaultConnectInfo
   , query
-  , close
   )
 
 import Control.Exception
@@ -42,12 +42,7 @@ getConnection connCfg =
       }
 
 initializePool :: DatabaseConn -> IO (Pool Connection)
-initializePool connCfg = 
-  createPool (getConnection connCfg)
-             close
-             2
-             60
-             10
+initializePool connCfg = createPool (getConnection connCfg) close 2 60 10
 
 checkMigration :: IO Connection -> String -> IO Bool
 checkMigration conn minMigration = do
