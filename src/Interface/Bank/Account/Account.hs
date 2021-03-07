@@ -18,22 +18,14 @@ import Data.Aeson
 import Data.Aeson.Types
 import GHC.Generics
 
-newtype HelloMessage =
-  HelloMessage
-    { msg :: String
-    }
-  deriving (Generic)
-
-instance ToJSON HelloMessage
-
 type AccountAPI
-   = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] HelloMessage
+   = Get '[ JSON] String :<|> Capture "id" Int :> Get '[ JSON] String
 
-accountServer :: Server AccountAPI
-accountServer = getAll :<|> getOne
+accountServer :: Pool Connection -> Server AccountAPI
+accountServer p = getAll p :<|> getOne p
 
-getAll :: Handler String
+getAll :: Pool Connection -> Handler String
 getAll = error "getAll"
 
-getOne :: Int -> Handler HelloMessage
-getOne _ = return (HelloMessage "AAA")
+getOne :: Pool Connection -> Int -> Handler String
+getOne _ = error "getOne"

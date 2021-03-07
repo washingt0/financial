@@ -20,13 +20,12 @@ import Data.Pool (Pool, withResource)
 
 import Database.PostgreSQL.Simple
 
-type CountryName = String
-
 data CountryData =
   CountryData
     { countryID :: String
     , countryName :: String
     , countryCurrency :: String
+    , countryCode :: String
     }
   deriving (Show, Generic)
 
@@ -46,8 +45,13 @@ fetchCountries c =
   map retrieveCountries <$>
   query_
     c
-    "SELECT id::TEXT, name, currency FROM public.t_country WHERE deleted_at IS NULL"
+    "SELECT id::TEXT, name, currency, code FROM public.t_country WHERE deleted_at IS NULL"
 
-retrieveCountries :: (String, String, String) -> CountryData
-retrieveCountries (id, name, currency) =
-  CountryData {countryID = id, countryName = name, countryCurrency = currency}
+retrieveCountries :: (String, String, String, String) -> CountryData
+retrieveCountries (id, name, currency, code) =
+  CountryData
+    { countryID = id
+    , countryName = name
+    , countryCurrency = currency
+    , countryCode = code
+    }

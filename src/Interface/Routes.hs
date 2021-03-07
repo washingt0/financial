@@ -18,10 +18,10 @@ import qualified Interface.Country.Country as CC
 import Control.Monad.IO.Class
 
 -- import Middleware.UserInfo (fetchUserInfo, UserInfo)
-type BaseAPI = "country" :> CC.CountryAPI
+type BaseAPI = "country" :> CC.CountryAPI :<|> "bank" :> BB.BankAPI
 
 baseAPI :: Proxy BaseAPI
 baseAPI = Proxy
 
 baseServer :: Pool Connection -> Server BaseAPI
-baseServer = CC.countryServer
+baseServer p = CC.countryServer p :<|> BB.bankServer p
